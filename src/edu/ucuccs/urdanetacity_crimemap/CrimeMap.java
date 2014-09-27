@@ -8,9 +8,11 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
-public class CrimeMap extends ActionBarActivity {
+public class CrimeMap extends ActionBarActivity implements OnMarkerClickListener {
 
 	//wala pang SHA-1 to sam
+	private ClusterManager<MyItem> mClusterManager;
+	private ArrayList<LatLng> arrayPoints = null;
 	private MapView map=null;
   private MyLocationOverlay me=null;
 	
@@ -33,7 +35,10 @@ public class CrimeMap extends ActionBarActivity {
                             marker.getIntrinsicHeight());
     
     map.getOverlays().add(new SitesOverlay(marker));
-    
+    mClusterManager = new ClusterManager<MyItem>(this, map);
+		
+		map.setOnMarkerClickListener(this);
+		map.setOnCameraChangeListener(mClusterManager);
     me=new MyLocationOverlay(this, map);
     map.getOverlays().add(me);
 
@@ -96,5 +101,13 @@ public class CrimeMap extends ActionBarActivity {
                                 "Accident"));
       populate();
     }
+    @Override
+	public boolean onMarkerClick(Marker arg0) {
+		  if (marker.equals(arg0)) 
+	        {
+	            //handle click here
+	        }
+		return false;
+	}
 
 }
